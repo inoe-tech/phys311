@@ -1,0 +1,31 @@
+Where are you starting from?
+What is your prior experience with physics, programming, and numerical methods?
+What do you feel confident about?
+What feels unfamiliar or intimidating?
+
+I have taken three prior physics classes and I'm taking another alongside
+this one. I have also taken a coding class and I've used code in previous
+physics classes. I feel like I'm ok at coding so I'm kind of confident in
+my ability to do the basics, but I'm not confident in my ability to code
+complex math.
+
+What do you want to get out of this course?
+Beyond a grade — what skills, understanding, or experiences are you hoping for?
+Is there a specific project idea already forming?
+
+I find coding itself pretty fun to do. So now knowing what this course is
+I want to advance my coding abilities and learn how to apply it to physics.
+
+
+How did the setup process go?
+Was it straightforward?
+Did you hit any roadblocks?
+How did you solve them?
+
+The setup process went ok. Most of the time it was straightforward.
+Also at one point it didn't make sense to me. It was when I was trying to
+setup create the checkpoint, journal, labs, and project folders. I just
+couldn't figure out how to link them to github. Eventually I scrolled down
+on the instructions had it informed me there was a different way to create
+them if you used Github Desktop like I had and it cleared up the whole thing.
+That was all I had in the way of roadblocks.
