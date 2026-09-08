@@ -1,0 +1,13 @@
+Reflect on your first numerical solve. What surprised you?
+
+I had a little bit of trouble trying to debug my code, and at times that can be
+a little frusterating. I remember in part B of the assignment when I was doing
+the Angle Sweep part I had a bug that shifted my graph by 5 degrees. In hindsight
+it was a very easy problem to solve but in the moment I checked everying but what
+was causeing it. In the end all I had to do was move one section of the code to the
+start to fix it. I had a few other debugging issues too but overall that one was the
+most annoying because of its simplicity.
+
+What surprise me was how long it took to do this assignment. I really didnt think it
+would take me around five hours to do. It was also surprising how easy it was to loose
+track of time while I did it.
