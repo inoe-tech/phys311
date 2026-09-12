@@ -1,0 +1,12 @@
+Journal: What did you learn about trusting (or not trusting) a simulation?
+
+I learned that simulations are only as good as you code them and should be trusted when
+you know that your code is right. I had some trouble in part c of the lab when I was
+trying to plot my graph. It was saying that my maximum energy drift for the Euler-Cromer
+method was zero at every value of dt. That is obviously not true, but the simulation
+said it was and I was fairly sure I coded it right. So I decided to not trust the
+simulation and instead I went to look for what went wrong. After 10-ish minutes of
+looking for the error I saw that I miss typed Euler-Cromer when calling the simulate
+function. The lesson here being do not blindly trust a simulation because the 
+simulation is only as good as you code it to be and you are not going to code it perfectly
+every time.
