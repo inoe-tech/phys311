@@ -1,0 +1,11 @@
+What has been the hardest concept so far? What clicked this week?
+
+The hardest concept so far has been plotting the resonance curve of a driven damped 
+oscillator. There is just some much stuff that has to be done in order to plot it, and it
+can be really easy to loose track of what you have already done and what you still need to
+do inorder to plot it. I am also not 100% sure on how every line of code work there either.
+Which is probably why it is still confusing to me. 
+
+Something that did click this week was about the Euler-Cromer equation. Seeing how poorly
+the Euler equation behaved with oscillators confirmed to me that Euler-Cromer was 100%
+better.
