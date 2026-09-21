@@ -1,0 +1,11 @@
+Reflect on what has been the hardest concept so far? What clicked this week?
+
+The hardest concept this week was making the loop for the sweep of diffrent e 
+values. While in concept it is easy it just took me a minute to get it and to 
+plot it. 
+
+As for what clicked this week plotting graphs has become much easier. I
+understand the process much better now. At first it was more or less copy and
+pasteing the lesson versions of the code and adapting it to current needs. I
+now feel as if I don't really need to do that anymore because I have worked
+with it so much it just comes more naturally to me now.
