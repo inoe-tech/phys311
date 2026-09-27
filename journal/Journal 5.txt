@@ -1,2 +1,9 @@
 Reflect on what has been the hardest concept so far? What clicked this week?
 
+The hardest thing this week was some of the loops I needed to make. They can be rather
+annoying when you forget to close them anf you think its just taking a minute to compute
+the answer.
+
+Sadly nothing really clicked this week. It did take me a little bit to write and debug
+some of the plotting lines and it took a bit to find numpy functions to use and to
+understand them. Other than that nothing really clicked.
