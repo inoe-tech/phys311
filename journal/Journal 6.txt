@@ -1,0 +1,5 @@
+Reflect on what has been the hardest concept so far? What clicked this week?
+
+This lab has probably been the hardest so far. It took me a long time to get part c to click
+in my head. The consept itself wasnt to bad. I just couldnt get it the code to work right
+for a while.
