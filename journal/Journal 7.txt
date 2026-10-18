@@ -1,0 +1,6 @@
+Reflect on what has been the hardest concept so far? What clicked this week?
+
+This week I had difficulty working with the engine. In my mind that is to be expected. At
+first I had trouble calling it and adding to it because this is something I haven't worked
+with before. Now I think those parts have clicked. Overall I think coding engines and I 
+can not wait to work with them more.
