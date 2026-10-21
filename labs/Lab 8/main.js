@@ -12,6 +12,18 @@ console.log("a.lengthSq()   =", a.lengthSq());          // 25
 console.log("a.normalized() =", a.normalized());        // Vec2 {x: 0.6, y: 0.8}
 console.log("|normalized|   =", a.normalized().length());// 1
 
+const canvas = document.getElementById("sim");
+const ctx = canvas.getContext("2d");
+
+// 20 px per metre, origin 50 px from the left, 50 px up from the bottom
+const cam = new Camera(20, 50, canvas.height - 50);
+
+// draw a 0.3 m-radius ball at physics position (2, 3)
+ctx.beginPath();
+ctx.arc(cam.toScreenX(2), cam.toScreenY(3), cam.toScreenLen(0.3), 0, Math.PI * 2);
+ctx.fillStyle = "#ff8200";
+ctx.fill();
+
 const DT = 1 / 240;          // physics timestep, seconds — never changes
 const MAX_FRAME = 0.25;      // clamp: never try to catch up more than 0.25 s
 
