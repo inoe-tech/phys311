@@ -1,0 +1,8 @@
+Reflect on what felt familiar, what felt alien. Did anything about the physics  
+become clearer when you had to rewrite it?
+
+Writing the engine felt familiar because it was something I had done before it 
+was just in a differnt language so it didn't fell that odd. What did feel alien
+was when I wrote the index and the style because I didn't really now how to 
+write it. So that took a while to figure that out. I saw the physics in the same 
+way as before. Nothing really became more clear.
