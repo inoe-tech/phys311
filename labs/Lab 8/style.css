@@ -52,6 +52,32 @@ body {
   font: inherit;
 }
 
+.timestep-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 8px;
+}
+
+.projectile-section p {
+  color: #273444;
+  font: 14px Arial, sans-serif;
+}
+
+.projectile-section button {
+  padding: 7px 10px;
+  border: 1px solid #aebbc8;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #273444;
+  cursor: pointer;
+  font: 14px Arial, sans-serif;
+}
+
+.projectile-section button:hover {
+  background: #e8eef3;
+}
+
 canvas {
   display: block;
   max-width: 100%;

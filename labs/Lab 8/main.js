@@ -15,15 +15,7 @@ console.log("a.normalized() =", a.normalized());
 console.log("|normalized|   =", a.normalized().length());
 
 const canvas = document.getElementById("sim");
-if (!(canvas instanceof HTMLCanvasElement)) {
-  throw new Error('Canvas element with id "sim" was not found.');
-}
-
 const ctx = canvas.getContext("2d");
-if (!ctx) {
-  throw new Error("A 2D canvas context could not be created.");
-}
-
 const camera = new Camera(70, 110, canvas.height - 70);
 const renderer = new Renderer(ctx, camera);
 renderer.draw();
@@ -59,26 +51,19 @@ for (const method of ["euler-cromer", "verlet"]) {
 }
 
 const projectileCanvas = document.getElementById("projectile-sim");
-if (!(projectileCanvas instanceof HTMLCanvasElement)) {
-  throw new Error('Canvas element with id "projectile-sim" was not found.');
-}
-
 const integratorSelect = document.getElementById("integrator-select");
-if (!(integratorSelect instanceof HTMLSelectElement)) {
-  throw new Error('Select element with id "integrator-select" was not found.');
-}
-
+const timestepSelect = document.getElementById("timestep-select");
+const variableTimestepToggle = document.getElementById("variable-timestep");
+const headlessButton = document.getElementById("run-headless");
 const projectileContext = projectileCanvas.getContext("2d");
-if (!projectileContext) {
-  throw new Error("A 2D canvas context for the projectile could not be created.");
-}
-
 const projectileCamera = new Camera(27, 45, 450);
 const projectileRenderer = new ProjectileRenderer(projectileContext, projectileCamera);
 const gravity = 9.81;
 const mass = 1;
 const launchSpeed = 20;
 const launchAngle = 50 * Math.PI / 180;
+const HEADLESS_DT = 1 / 240;
+const HEADLESS_STEPS = 480;
 const trail = [{ x: 0, y: 0 }];
 
 function resetProjectile() {
@@ -95,6 +80,49 @@ function resetProjectile() {
 
 let projectileState = resetProjectile();
 
+function runHeadlessProjectile(method, dt, steps) {
+  const position = new Vec2(0, 0);
+  const angle = 45 * Math.PI / 180;
+  const velocity = new Vec2(25 * Math.cos(angle), 25 * Math.sin(angle));
+  const acceleration = new Vec2(0, -gravity);
+
+  for (let step = 0; step < steps; step += 1) {
+    if (method === "euler-cromer") {
+      velocity.addScaled(acceleration, dt);
+      position.addScaled(velocity, dt);
+    } else {
+      position.addScaled(velocity, dt);
+      position.addScaled(acceleration, 0.5 * dt * dt);
+      velocity.addScaled(acceleration, dt);
+    }
+  }
+
+  const kineticEnergy = 0.5 * mass * velocity.lengthSq();
+  const potentialEnergy = mass * gravity * position.y;
+  return {
+    x: position.x,
+    y: position.y,
+    vx: velocity.x,
+    vy: velocity.y,
+    E_total: kineticEnergy + potentialEnergy,
+  };
+}
+
+function runHeadlessValidation() {
+  const simulatedTime = HEADLESS_DT * HEADLESS_STEPS;
+  for (const method of ["euler-cromer", "verlet"]) {
+    const result = runHeadlessProjectile(method, HEADLESS_DT, HEADLESS_STEPS);
+    console.log(
+      `${method} final state (${HEADLESS_STEPS} steps, ${simulatedTime} s): ` +
+      `x=${result.x.toPrecision(17)}, y=${result.y.toPrecision(17)}, ` +
+      `vx=${result.vx.toPrecision(17)}, vy=${result.vy.toPrecision(17)}, ` +
+      `E_total=${result.E_total.toPrecision(17)} J`,
+    );
+  }
+}
+
+headlessButton.addEventListener("click", runHeadlessValidation);
+
 function resetAnimation() {
   projectileState = resetProjectile();
   trail.length = 0;
@@ -104,6 +132,7 @@ function resetAnimation() {
 }
 
 integratorSelect.addEventListener("change", resetAnimation);
+timestepSelect.addEventListener("change", resetAnimation);
 
 function updateProjectile(dt) {
   if (integratorSelect.value === "euler-cromer") {
@@ -135,15 +164,26 @@ function render() {
 let previousTime = null;
 let accumulator = 0;
 
+variableTimestepToggle.addEventListener("change", () => {
+  accumulator = 0;
+  previousTime = null;
+  timestepSelect.disabled = variableTimestepToggle.checked;
+});
+
 function animate(timestamp) {
   const elapsed = previousTime === null ? 0 : (timestamp - previousTime) / 1000;
   const frameTime = Math.min(elapsed, 0.25);
   previousTime = timestamp;
-  accumulator += frameTime;
 
-  while (accumulator >= DT) {
-    updateProjectile(DT);
-    accumulator -= DT;
+  if (variableTimestepToggle.checked) {
+    updateProjectile(frameTime);
+  } else {
+    accumulator += frameTime;
+    const graphDt = Number(timestepSelect.value);
+    while (accumulator >= graphDt) {
+      updateProjectile(graphDt);
+      accumulator -= graphDt;
+    }
   }
 
   render();

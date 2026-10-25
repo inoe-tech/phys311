@@ -10,20 +10,32 @@
     <h1 class="part-title">Part A: Vec2 and a Working Canvas (25 points)</h1>
     <canvas id="sim" width="800" height="600"></canvas>
   </main>
-  <section class="projectile-section" aria-labelledby="Part-B-title">
-    <h2 id="Part-B-title">Part B: The Ported Integrator (35 points)</h2>
+  <section class="projectile-section" aria-labelledby="part-b-title">
+    <h2 id="part-b-title">Part B: The Ported Integrator (35 points)</h2>
     <div class="simulation-controls">
       <label for="integrator-select">Integrator</label>
       <select id="integrator-select">
         <option value="velocity-verlet">Velocity Verlet</option>
         <option value="euler-cromer">Euler-Cromer</option>
       </select>
+      <label for="timestep-select">Fixed timestep (DT)</label>
+      <select id="timestep-select">
+        <option value="0.004166666666666667">1/240 s</option>
+        <option value="0.008333333333333333">1/120 s</option>
+        <option value="0.05">1/20 s</option>
+      </select>
+      <label class="timestep-control" for="variable-timestep">
+        <input id="variable-timestep" type="checkbox">
+        Variable timestep
+      </label>
     </div>
     <canvas id="projectile-sim" width="1000" height="540"
       aria-label="Animated projectile motion"></canvas>
   </section>
-  <section class="projectile-section" aria-labelledby="Part-C-title">
-    <h2 id="Part-C-title">Part C: Cross-Language Validation (40 points)</h2>
+  <section class="projectile-section" aria-labelledby="part-c-title">
+    <h2 id="part-c-title">Part C: Cross-Language Validation (40 points)</h2>
+    <p>Run a 10-second projectile simulation without rendering and print the final state to the browser console.</p>
+    <button id="run-headless" type="button">Run headless validation</button>
   </section>
   <script type="module" src="main.js"></script>
 </body>
