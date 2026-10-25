@@ -1,9 +1,55 @@
 body {
   margin: 0;
   min-height: 100vh;
-  display: grid;
-  place-items: center;
   background: #f3f6f8;
+}
+
+#existing-simulation {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+}
+
+.part-title {
+  box-sizing: border-box;
+  width: min(100%, 802px);
+  margin: 0;
+  color: #273444;
+  font: 600 1.25rem Arial, sans-serif;
+  text-align: left;
+}
+
+.projectile-section {
+  box-sizing: border-box;
+  width: min(100%, 1032px);
+  margin: 0 auto;
+  padding: 0 16px 28px;
+}
+
+.projectile-section h2 {
+  margin: 0 0 12px;
+  color: #273444;
+  font: 600 1.25rem Arial, sans-serif;
+}
+
+.simulation-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  color: #273444;
+  font: 14px Arial, sans-serif;
+}
+
+.simulation-controls select {
+  padding: 5px 8px;
+  border: 1px solid #aebbc8;
+  border-radius: 4px;
+  background: #ffffff;
+  color: #273444;
+  font: inherit;
 }
 
 canvas {

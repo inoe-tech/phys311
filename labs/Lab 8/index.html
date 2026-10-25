@@ -6,7 +6,25 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <canvas id="sim" width="800" height="600"></canvas>
+  <main id="existing-simulation">
+    <h1 class="part-title">Part A: Vec2 and a Working Canvas (25 points)</h1>
+    <canvas id="sim" width="800" height="600"></canvas>
+  </main>
+  <section class="projectile-section" aria-labelledby="Part-B-title">
+    <h2 id="Part-B-title">Part B: The Ported Integrator (35 points)</h2>
+    <div class="simulation-controls">
+      <label for="integrator-select">Integrator</label>
+      <select id="integrator-select">
+        <option value="velocity-verlet">Velocity Verlet</option>
+        <option value="euler-cromer">Euler-Cromer</option>
+      </select>
+    </div>
+    <canvas id="projectile-sim" width="1000" height="540"
+      aria-label="Animated projectile motion"></canvas>
+  </section>
+  <section class="projectile-section" aria-labelledby="Part-C-title">
+    <h2 id="Part-C-title">Part C: Cross-Language Validation (40 points)</h2>
+  </section>
   <script type="module" src="main.js"></script>
 </body>
 </html>

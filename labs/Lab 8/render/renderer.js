@@ -79,3 +79,108 @@ export class Renderer {
     ctx.fillText("y (m)", axisX + 10, 10);
   }
 }
+
+export class ProjectileRenderer {
+  constructor(ctx, camera) {
+    this.ctx = ctx;
+    this.camera = camera;
+  }
+
+  draw(state, trail) {
+    const { ctx, camera } = this;
+    const { width, height } = ctx.canvas;
+
+    ctx.clearRect(0, 0, width, height);
+    this.drawGround();
+    this.drawTrail(trail);
+
+    ctx.beginPath();
+    ctx.arc(
+      camera.toScreenX(state.x),
+      camera.toScreenY(state.y),
+      camera.toScreenLen(0.3),
+      0,
+      Math.PI * 2,
+    );
+    ctx.fillStyle = "#167d9a";
+    ctx.fill();
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = "#104b60";
+    ctx.stroke();
+
+    this.drawHud(state);
+  }
+
+  drawGround() {
+    const { ctx, camera } = this;
+    const { width } = ctx.canvas;
+    const axisY = camera.toScreenY(0);
+    const lastX = Math.floor(camera.toWorldX(width) / 5) * 5;
+
+    ctx.strokeStyle = "#273444";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, axisY);
+    ctx.lineTo(width, axisY);
+    ctx.stroke();
+
+    ctx.font = "13px Arial, sans-serif";
+    ctx.fillStyle = "#526170";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    for (let x = 0; x <= lastX; x += 5) {
+      const screenX = camera.toScreenX(x);
+      ctx.beginPath();
+      ctx.moveTo(screenX, axisY - 4);
+      ctx.lineTo(screenX, axisY + 4);
+      ctx.stroke();
+      ctx.fillText(String(x), screenX, axisY + 8);
+    }
+    ctx.textAlign = "right";
+    ctx.fillText("x (m)", width - 12, axisY + 8);
+  }
+
+  drawTrail(trail) {
+    const { ctx, camera } = this;
+    if (trail.length < 2) return;
+
+    ctx.lineWidth = 2.5;
+    ctx.lineCap = "round";
+    for (let i = 1; i < trail.length; i += 1) {
+      const opacity = 0.08 + 0.72 * (i / (trail.length - 1));
+      ctx.strokeStyle = `rgba(22, 125, 154, ${opacity})`;
+      ctx.beginPath();
+      ctx.moveTo(camera.toScreenX(trail[i - 1].x), camera.toScreenY(trail[i - 1].y));
+      ctx.lineTo(camera.toScreenX(trail[i].x), camera.toScreenY(trail[i].y));
+      ctx.stroke();
+    }
+  }
+
+  drawHud(state) {
+    const { ctx } = this;
+    const speed = Math.hypot(state.vx, state.vy);
+    const kineticEnergy = 0.5 * state.mass * speed * speed;
+    const potentialEnergy = state.mass * state.gravity * state.y;
+    const values = [
+      `t       ${state.t.toFixed(3)} s`,
+      `x       ${state.x.toFixed(3)} m`,
+      `y       ${state.y.toFixed(3)} m`,
+      `|v|     ${speed.toFixed(3)} m/s`,
+      `KE      ${kineticEnergy.toFixed(3)} J`,
+      `PE      ${potentialEnergy.toFixed(3)} J`,
+      `E_total ${(kineticEnergy + potentialEnergy).toFixed(3)} J`,
+    ];
+
+    ctx.fillStyle = "rgba(20, 32, 48, 0.9)";
+    ctx.fillRect(14, 14, 246, 178);
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 14px Arial, sans-serif";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+    ctx.fillText("PROJECTILE  |  m = 1 kg", 26, 24);
+    ctx.font = "13px Consolas, monospace";
+    values.forEach((value, index) => {
+      ctx.fillText(value, 26, 48 + index * 19);
+    });
+  }
+}
