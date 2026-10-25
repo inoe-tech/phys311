@@ -1,3 +1,19 @@
+import { Vec2 } from './vec2.js';
+
+export class Gravity {
+  constructor(g = 9.81) { this.g = g; }
+  apply(world) {
+    for (const b of world.bodies) {
+      if (b.fixed) continue;
+      b.force.y -= b.m * this.g;
+    }
+  }
+  potentialEnergy(world) {
+    let U = 0;
+    for (const b of world.bodies) if (!b.fixed) U += b.m * this.g * b.pos.y;
+    return U;
+  }
+}
 export class Spring {
   constructor(body, anchor, k, restLength = 0) {
     this.body = body; this.anchor = anchor;

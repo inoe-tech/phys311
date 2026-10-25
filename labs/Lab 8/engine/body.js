@@ -1,3 +1,4 @@
+import { Vec2 } from './vec2.js';
 class Body {
     constructor(x, y, vx, vy, m = 1, radius = 10) {
     this.pos = new Vec2(x, y);
