@@ -1,0 +1,3 @@
+Reflect on what porting revealed about your Python design?  
+What would you architect differently if you started over?
+
