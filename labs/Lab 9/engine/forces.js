@@ -4,13 +4,13 @@ export class Gravity {
   constructor(g = 9.81) { this.g = g; }
   apply(world) {
     for (const b of world.bodies) {
-      if (b.fixed) continue;
+      if (b.isStatic) continue;
       b.force.y -= b.m * this.g;
     }
   }
   potentialEnergy(world) {
     let U = 0;
-    for (const b of world.bodies) if (!b.fixed) U += b.m * this.g * b.pos.y;
+    for (const b of world.bodies) if (!b.isStatic) U += b.m * this.g * b.pos.y;
     return U;
   }
 }

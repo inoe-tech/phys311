@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lab 9 - Physics Simulations</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <main>
+      <h1>Physics simulations</h1>
+      <section class="controls" aria-label="Simulation controls">
+        <label>Scene
+          <select id="scene"></select>
+        </label>
+        <label>Integrator
+          <select id="integrator">
+            <option value="verlet">Velocity Verlet</option>
+            <option value="euler">Euler-Cromer</option>
+          </select>
+        </label>
+        <label>Restitution <output id="restitution-value">0.80</output>
+          <input id="restitution" type="range" min="0" max="1" step="0.05" value="0.8">
+        </label>
+      </section>
+      <canvas id="simulation" width="1100" height="650" aria-label="Physics simulation"></canvas>
+      <section class="readouts">
+        <div>
+          <h2>Live diagnostics</h2>
+          <div id="hud" aria-live="polite"></div>
+        </div>
+        <div>
+          <h2>60-second conservation checks</h2>
+          <button id="run-diagnostics" type="button">Run diagnostics</button>
+          <pre id="diagnostics" aria-live="polite">Select a scene. The diagnostics compare isolated pair collisions, softened gravity, and a spring network.</pre>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
