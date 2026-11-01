@@ -3,7 +3,11 @@ import { EulerCromer, VelocityVerlet } from "./engine/integrators.js";
 import { Camera } from "./render/camera.js";
 import { drawHUD } from "./render/hud.js";
 import { Renderer } from "./render/renderer.js";
-import { formatDiagnostics, runDiagnostics, SCENES } from "./scenes/scenes.js";
+import {
+  formatDiagnostics,
+  runDiagnostics,
+  SCENES,
+} from "./scenes/scenes.js";
 
 if (typeof document !== "undefined") {
   const canvas = document.querySelector("#simulation");
@@ -13,6 +17,7 @@ if (typeof document !== "undefined") {
   const restitutionInput = document.querySelector("#restitution");
   const restitutionOutput = document.querySelector("#restitution-value");
   const diagnosticsOutput = document.querySelector("#diagnostics");
+  const bodyCountSelect = document.querySelector("#body-count");
   const camera = new Camera(1, 0, 0);
   const renderer = new Renderer(canvas, camera);
   const dt = 1 / 240;
@@ -36,7 +41,7 @@ if (typeof document !== "undefined") {
 
   function buildScene() {
     const scene = SCENES[sceneSelect.value];
-    world = scene.build(Number(restitutionInput.value));
+    world = scene.build(Number(restitutionInput.value), Number(bodyCountSelect.value));
     world.integrator = new integrators[integratorSelect.value]();
     initialEnergy = world.totalEnergy();
     renderer.clearTrails();
@@ -44,10 +49,12 @@ if (typeof document !== "undefined") {
     accumulator.reset();
     diagnosticsOutput.textContent = world.description;
     restitutionInput.disabled = sceneSelect.value !== "ballpit";
+    bodyCountSelect.disabled = sceneSelect.value !== "ballpit";
   }
 
   sceneSelect.addEventListener("change", buildScene);
   integratorSelect.addEventListener("change", buildScene);
+  bodyCountSelect.addEventListener("change", buildScene);
   restitutionInput.addEventListener("input", () => {
     restitutionOutput.value = Number(restitutionInput.value).toFixed(2);
     if (sceneSelect.value === "ballpit") {
@@ -65,7 +72,6 @@ if (typeof document !== "undefined") {
       }
     }, 0);
   });
-
   function animate(timestamp) {
     if (previousFrame !== null) {
       fpsFrames++;

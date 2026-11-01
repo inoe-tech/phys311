@@ -22,6 +22,14 @@
         <label>Restitution <output id="restitution-value">0.80</output>
           <input id="restitution" type="range" min="0" max="1" step="0.05" value="0.8">
         </label>
+        <label>Scene 1 bodies
+          <select id="body-count">
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+          </select>
+        </label>
       </section>
       <canvas id="simulation" width="1100" height="650" aria-label="Physics simulation"></canvas>
       <section class="readouts">

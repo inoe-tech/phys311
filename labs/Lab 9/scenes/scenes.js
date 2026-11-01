@@ -19,30 +19,38 @@ function random(seed) {
   };
 }
 
-export function buildBallPit(restitution = 0.8) {
+export function buildBallPit(restitution = 0.8, count = 20) {
+  const columns = Math.ceil(Math.sqrt(count * 1.6));
+  const rows = Math.ceil(count / columns);
+  const spacing = 0.82;
   const world = new World({
     integrator: new EulerCromer(),
-    bounds: { xMin: -10, xMax: 10, yMin: -6, yMax: 6 },
+    bounds: {
+      xMin: -9,
+      xMax: 9,
+      yMin: -6,
+      yMax: 6,
+    },
   });
   world.restitution = restitution;
 
   const rand = random(3119);
-  for (let i = 0; i < 20; i++) {
-    const column = i % 5;
-    const row = Math.floor(i / 5);
+  for (let i = 0; i < count; i++) {
+    const column = i % columns;
+    const row = Math.floor(i / columns);
     world.add(new Body(
-      (column - 2) * 0.9,
-      (row - 1.5) * 0.9,
+      (column - (columns - 1) / 2) * spacing,
+      ((rows - 1) / 2 - row) * spacing,
       (rand() - 0.5) * 4.8,
       (rand() - 0.5) * 4.8,
       1,
-      0.4,
+      0.3,
       { color: palette[i % palette.length] },
     ));
   }
   world.viewBounds = world.bounds;
   world.trailsEnabled = true;
-  world.description = "20 equal-mass balls; wall impacts change system momentum.";
+  world.description = `${count} equal-mass balls; wall impacts change system momentum.`;
   return world;
 }
 
