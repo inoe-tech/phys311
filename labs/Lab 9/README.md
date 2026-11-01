@@ -1,2 +1,3 @@
 What each scene shows, how to switch scenes, and what controls exist.
 
+Scene 1 shows 20, 50, 100, or 200 balls colliding inside of a box. Scene 2 shows 3 oscilating bodies. Scene 3 shows a spring network of 5 bodies. The scenes can be switched by going to the scenes box on the left hand side of the graph clicking the drop down box and selecting the desired scene. In the same area as the scene box there are other controls that can change the number of balls, change the e value, and the integrator.

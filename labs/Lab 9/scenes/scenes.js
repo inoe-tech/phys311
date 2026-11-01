@@ -168,7 +168,7 @@ function assertFiniteBodies(world, label) {
   }
 }
 
-export function runDiagnostics() {
+export function runChecks() {
   const dt = 1 / 240;
   const steps = Math.round(60 / dt);
   const elastic = buildBallPit(1);
@@ -181,7 +181,7 @@ export function runDiagnostics() {
   for (let step = 0; step < steps; step++) {
     const before = elastic.bodies.map((body) => body.vel.clone());
     elastic.step(dt);
-    assertFiniteBodies(elastic, "Elastic billiards");
+    assertFiniteBodies(elastic, "Elastic balls");
     let changedBodies = 0;
     for (let i = 0; i < elastic.bodies.length; i++) {
       if (elastic.bodies[i].vel.sub(before[i]).lengthSq() > 1e-16) changedBodies++;
@@ -194,7 +194,7 @@ export function runDiagnostics() {
     estimatedImpacts += changedBodies / 2;
   }
   if (maxBallCoordinate >= 299.6) {
-    throw new Error("Elastic momentum diagnostic unexpectedly hit a box wall.");
+    throw new Error("Elastic momentum check unexpectedly hit a box wall.");
   }
   const elasticP60Vector = elastic.totalMomentum();
   const p60 = elasticP60Vector.length();
@@ -210,7 +210,7 @@ export function runDiagnostics() {
   let monotonic = true;
   for (let step = 0; step < steps; step++) {
     inelastic.step(dt);
-    assertFiniteBodies(inelastic, "Inelastic billiards");
+    assertFiniteBodies(inelastic, "Inelastic balls");
     const energy = inelastic.totalEnergy();
     if (energy > previousEnergy + energyTolerance) monotonic = false;
     previousEnergy = energy;
@@ -285,7 +285,7 @@ export function runDiagnostics() {
   };
 }
 
-export function formatDiagnostics(result) {
+export function formatChecks(result) {
   const gravityDrift = Math.max(
     Math.abs(result.gravity.minEnergy - result.gravity.e0),
     Math.abs(result.gravity.maxEnergy - result.gravity.e0),
@@ -302,7 +302,7 @@ export function formatDiagnostics(result) {
 }
 
 export const SCENES = {
-  ballpit: { label: "Billiards / ball pit", build: buildBallPit },
-  gravity: { label: "Softened gravitational N-body", build: buildNBody },
-  springs: { label: "Spring network", build: buildSpringNetwork },
+  ballpit: { label: "Ball Pit", build: buildBallPit },
+  gravity: { label: "Gravitational N-body", build: buildNBody },
+  springs: { label: "Spring Network", build: buildSpringNetwork },
 };

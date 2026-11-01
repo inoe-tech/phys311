@@ -17,7 +17,7 @@ export class World {
 
   step(dt) {
     for (const b of this.bodies) b.clearForce();      // 1. reset
-    for (const f of this.forces) f.apply(this);         // 2. accumulate
+    for (const f of this.forces) f.apply(this);       // 2. accumulate
     this.integrator.step(this, dt);                   // 3. integrate
     resolveCollisions(this);                          // 4. collide
     this.time += dt;                                  // 5. advance clock

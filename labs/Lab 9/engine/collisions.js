@@ -19,9 +19,9 @@ export function resolvePair(a, b, e = 0.9) {
   // --- 2. Impulse: only if they're approaching ---
   const relVel = b.vel.sub(a.vel);
   const vn = relVel.dot(n);
-  if (vn > 0) return true;                // separating — leave alone
+  if (vn > 0) return true;                
 
-  const J = -(1 + e) * vn / invSum;      // impulse magnitude
+  const J = -(1 + e) * vn / invSum;      
   a.vel.addScaled(n, -J * invA);
   b.vel.addScaled(n,  J * invB);
   return true;

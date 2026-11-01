@@ -1,3 +1,8 @@
 Reflect on what porting revealed about your Python design?  
 What would you architect differently if you started over?
 
+It revealed that my Python design was pretty mediocre. It worked but it 
+wasn't fantasic. Porting it to java script showed me that there is a lot 
+I can do now to improve my past code. If I started over now I would 
+probably write more comments in my code to remind me how it worked and 
+to show me what did what.

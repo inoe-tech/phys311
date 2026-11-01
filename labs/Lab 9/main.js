@@ -4,8 +4,8 @@ import { Camera } from "./render/camera.js";
 import { drawHUD } from "./render/hud.js";
 import { Renderer } from "./render/renderer.js";
 import {
-  formatDiagnostics,
-  runDiagnostics,
+  formatChecks,
+  runChecks,
   SCENES,
 } from "./scenes/scenes.js";
 
@@ -16,7 +16,7 @@ if (typeof document !== "undefined") {
   const integratorSelect = document.querySelector("#integrator");
   const restitutionInput = document.querySelector("#restitution");
   const restitutionOutput = document.querySelector("#restitution-value");
-  const diagnosticsOutput = document.querySelector("#diagnostics");
+  const checksOutput = document.querySelector("#checks");
   const bodyCountSelect = document.querySelector("#body-count");
   const camera = new Camera(1, 0, 0);
   const renderer = new Renderer(canvas, camera);
@@ -47,7 +47,7 @@ if (typeof document !== "undefined") {
     renderer.clearTrails();
     camera.fit(world.viewBounds ?? world.bounds, canvas);
     accumulator.reset();
-    diagnosticsOutput.textContent = world.description;
+    checksOutput.textContent = world.description;
     restitutionInput.disabled = sceneSelect.value !== "ballpit";
     bodyCountSelect.disabled = sceneSelect.value !== "ballpit";
   }
@@ -61,14 +61,14 @@ if (typeof document !== "undefined") {
       world.restitution = Number(restitutionInput.value);
     }
   });
-  document.querySelector("#run-diagnostics").addEventListener("click", () => {
-    diagnosticsOutput.textContent = "Running 60-second checks...";
+  document.querySelector("#run-checks").addEventListener("click", () => {
+    checksOutput.textContent = "Running 60-second checks...";
     setTimeout(() => {
       try {
-        const result = runDiagnostics();
-        diagnosticsOutput.textContent = formatDiagnostics(result);
+        const result = runChecks();
+        checksOutput.textContent = formatChecks(result);
       } catch (error) {
-        diagnosticsOutput.textContent = `Diagnostics failed: ${error.message}`;
+        checksOutput.textContent = `Checks failed: ${error.message}`;
       }
     }, 0);
   });

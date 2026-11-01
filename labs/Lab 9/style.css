@@ -19,7 +19,20 @@ h1 {
   margin-bottom: 0.25rem;
 }
 
-.controls,
+.simulation-layout {
+  display: grid;
+  grid-template-columns: minmax(170px, 210px) minmax(0, 1fr) minmax(220px, 250px);
+  align-items: start;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
 .readouts {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -28,11 +41,16 @@ h1 {
 }
 
 .controls label,
-.readouts > div {
+.readouts > div,
+.hud-panel {
   padding: 0.9rem;
   background: #fff;
   border: 1px solid #d5dee3;
   border-radius: 0.35rem;
+}
+
+.hud-panel {
+  min-width: 0;
 }
 
 select,
@@ -55,6 +73,7 @@ button {
 
 canvas {
   display: block;
+  width: 100%;
   max-width: 100%;
   height: auto;
   border: 1px solid #b7c3ca;
@@ -62,11 +81,11 @@ canvas {
 }
 
 #hud,
-#diagnostics {
+#checks {
   font-family: ui-monospace, monospace;
 }
 
-#diagnostics {
+#checks {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
@@ -74,9 +93,40 @@ canvas {
 .hud-row {
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.5rem;
+}
+
+.hud-row span,
+.hud-row b {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.hud-row b {
+  text-align: right;
 }
 
 .drift-high b {
   color: #dc3545;
+}
+
+@media (max-width: 960px) {
+  .simulation-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 250px);
+  }
+
+  .controls {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 720px) {
+  .simulation-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .controls {
+    grid-column: auto;
+  }
 }
