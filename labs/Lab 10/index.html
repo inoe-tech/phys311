@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lab 10 - Interactive Physics</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <main>
+      <h1>Lab 10 - Interactive Physics</h1>
+      <p>Move or touch the canvas to inspect world coordinates. Use the arrow keys to thrust the orange body.</p>
+      <section class="simulation-layout">
+        <canvas id="simulation" width="1000" height="600" aria-label="Interactive physics simulation"></canvas>
+        <aside class="hud-panel" aria-label="Simulation HUD">
+          <h2>Live HUD</h2>
+          <div id="hud" aria-live="polite"></div>
+        </aside>
+      </section>
+    </main>
+    <script type="module" src="./main.js"></script>
+  </body>
+</html>
