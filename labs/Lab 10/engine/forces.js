@@ -34,9 +34,45 @@ export class Spring {
   }
 }
 
+export class MouseSpring {
+  constructor(stiffness = 80, damping = 14) {
+    this.stiffness = stiffness;
+    this.damping = damping;
+    this.body = null;
+    this.target = new Vec2();
+  }
+
+  grab(body, x, y) {
+    if (body.isStatic) return;
+    this.body = body;
+    this.target.set(x, y);
+  }
+
+  moveTo(x, y) {
+    this.target.set(x, y);
+  }
+
+  release() {
+    this.body = null;
+  }
+
+  apply(world) {
+    if (!this.body || this.body.isStatic) return;
+    const displacement = this.target.sub(this.body.pos);
+    if (displacement.lengthSq() > 0 || this.body.vel.lengthSq() > 0) {
+      world.externalForceApplied = true;
+    }
+    this.body.force.addScaled(displacement, this.stiffness);
+    this.body.force.addScaled(this.body.vel, -this.damping);
+  }
+}
+
 export class Drag {
   constructor(c = 0.1) { this.c = c; }
   apply(world) {
+    if (this.c > 0 && world.bodies.some((body) => body.vel.lengthSq() > 0)) {
+      world.externalForceApplied = true;
+    }
     for (const b of world.bodies) {
       const speed = b.vel.length();
       if (speed > 0) b.force.addScaled(b.vel, -this.c * speed);
@@ -54,6 +90,9 @@ export class ThrustForce {
 
   apply(world) {
     if (this.body.isStatic) return;
+    const thrusting = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"]
+      .some((key) => this.keys.has(key));
+    if (thrusting) world.externalForceApplied = true;
     if (this.keys.has("ArrowUp")) this.body.force.y += this.mag;
     if (this.keys.has("ArrowLeft")) this.body.force.x -= this.mag;
     if (this.keys.has("ArrowRight")) this.body.force.x += this.mag;
@@ -74,5 +113,16 @@ export class NewtonGravity {
         bs[j].force.addScaled(d, -F);   // Newton's third law, for free
       }
     }
+  }
+  potentialEnergy(world) {
+    let energy = 0;
+    const bodies = world.bodies;
+    for (let i = 0; i < bodies.length; i++) {
+      for (let j = i + 1; j < bodies.length; j++) {
+        const distanceSq = bodies[j].pos.sub(bodies[i].pos).lengthSq() + this.eps ** 2;
+        energy -= this.G * bodies[i].m * bodies[j].m / Math.sqrt(distanceSq);
+      }
+    }
+    return energy;
   }
 }

@@ -19,6 +19,17 @@ export class Camera {
     );
     this.originX = canvas.width / 2 - (bounds.xMin + bounds.xMax) * this.scale / 2;
     this.originY = canvas.height / 2 + (bounds.yMin + bounds.yMax) * this.scale / 2;
+    this.fitScale = this.scale;
+  }
+
+  zoom(factor, canvas) {
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const scale = Math.max(this.fitScale * 0.25, Math.min(this.fitScale * 8, this.scale * factor));
+    const ratio = scale / this.scale;
+    this.originX = centerX + (this.originX - centerX) * ratio;
+    this.originY = centerY + (this.originY - centerY) * ratio;
+    this.scale = scale;
   }
 
   // physics (m) -> canvas (px).  Note the MINUS on y: that is the flip.

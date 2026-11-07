@@ -3,19 +3,76 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Lab 10 - Interactive Physics</title>
+    <title>Planetary Orbits</title>
     <link rel="stylesheet" href="./style.css">
   </head>
   <body>
     <main>
-      <h1>Lab 10 - Interactive Physics</h1>
-      <p>Move or touch the canvas to inspect world coordinates. Use the arrow keys to thrust the orange body.</p>
+      <h1>Planetary Orbits</h1>
+      <p>This simulation's purpose it to show how planets orbit their star.</p>
+      <section class="controls" aria-label="Simulation controls">
+        <button id="play-pause" type="button" aria-pressed="true"
+          aria-keyshortcuts="Space" title="Pause or resume with Space">Pause</button>
+        <button id="step" type="button" disabled aria-keyshortcuts="S"
+          title="Advance one step while paused with S">Single step</button>
+        <button id="reset" type="button" aria-keyshortcuts="R"
+          title="Reset with R">Reset</button>
+        <button id="zoom-out" type="button" aria-label="Zoom out" title="Zoom out with minus">Zoom −</button>
+        <button id="zoom-in" type="button" aria-label="Zoom in" title="Zoom in with plus">Zoom +</button>
+        <label for="speed">Simulation Speed <output id="speed-value">1.00×</output></label>
+        <input id="speed" type="range" min="0.25" max="2" step="0.25" value="1"
+          aria-label="Simulation speed">
+        <label for="gravity">Strength of Gravity <output id="gravity-value">1.00</output></label>
+        <input id="gravity" type="range" min="0.2" max="2" step="0.05" value="1">
+        <label for="restitution">Collision Restitution <output id="restitution-value">1.00</output></label>
+        <input id="restitution" type="range" min="0" max="1" step="0.01" value="1">
+        <label for="drag">Drag Coefficient <output id="drag-value">0.00</output></label>
+        <input id="drag" type="range" min="0" max="0.2" step="0.005" value="0">
+        <label for="body-count">Number of Starting Planets <output id="body-count-value">6</output></label>
+        <input id="body-count" type="range" min="1" max="12" step="1" value="6">
+        <label for="spawn-enabled">
+          <input id="spawn-enabled" type="checkbox">
+          Enable Planet Spawning
+        </label>
+        <label for="integrator">Integrator</label>
+        <select id="integrator">
+          <option value="euler-cromer">Euler-Cromer</option>
+          <option value="verlet" selected>Velocity Verlet</option>
+          <option value="euler">Euler</option>
+        </select>
+      </section>
+      <fieldset class="visual-controls">
+        <legend>Physics visuals</legend>
+        <label for="trails"><input id="trails" type="checkbox" checked> Motion trails</label>
+        <label for="velocity-vectors"><input id="velocity-vectors" type="checkbox" checked> Velocity vectors</label>
+        <label for="force-vectors"><input id="force-vectors" type="checkbox" checked> Force vectors</label>
+        <span class="visual-legend">
+          <span><i class="legend-swatch velocity"></i>Blue arrow: velocity</span>
+          <span><i class="legend-swatch force"></i>Red arrow: force</span>
+        </span>
+      </fieldset>
       <section class="simulation-layout">
-        <canvas id="simulation" width="1000" height="600" aria-label="Interactive physics simulation"></canvas>
-        <aside class="hud-panel" aria-label="Simulation HUD">
-          <h2>Live HUD</h2>
-          <div id="hud" aria-live="polite"></div>
-        </aside>
+        <canvas id="simulation" width="1000" height="600" tabindex="0"
+          aria-keyshortcuts="Space R S + - I O E"
+          aria-label="N-body gravity simulation showing planets orbiting a star">
+        </canvas>
+        <div class="below-graph">
+          <aside class="hud-panel" aria-label="Simulation HUD">
+            <h2>HUD</h2>
+            <div id="hud" aria-live="polite"></div>
+          </aside>
+          <aside class="keyboard-panel" aria-label="Keyboard controls">
+            <h2>Keyboard Controls</h2>
+            <dl>
+              <dt><kbd>Space</kbd></dt><dd>Pause and Resume</dd>
+              <dt><kbd>R</kbd></dt><dd>Reset Simulation</dd>
+              <dt><kbd>S</kbd></dt><dd>Advance 1 Time Step</dd>
+              <dt><kbd>I</kbd> / <kbd>O</kbd></dt><dd>Decrease / Increase Simulation Speed</dd>
+              <dt><kbd>E</kbd></dt><dd>Change Integrator</dd>
+              <dt><kbd>+</kbd> / <kbd>−</kbd></dt><dd>Zoom in / Zoom out</dd>
+            </dl>
+          </aside>
+        </div>
       </section>
     </main>
     <script type="module" src="./main.js"></script>

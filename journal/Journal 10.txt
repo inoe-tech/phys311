@@ -1,2 +1,13 @@
 What surprised you about designing for a user rather than for yourself? 
 What's your final project going to be?
+
+I found myself caring more about how the simulation looked in the web 
+browers than how many bugs there were or how well it ran. After all first 
+impressions are everything. In my experiance a user (like me) is more 
+likely to come back to something that is a work in progress if it is 
+somewhat functional and if it looks good.
+
+I personally really like planet sims so I am thinking about doing 
+something that is along those lines. I doubt that I will be able to do 
+everything that I want to with it but I think this project will be the 
+most enjoyable for me to work on.

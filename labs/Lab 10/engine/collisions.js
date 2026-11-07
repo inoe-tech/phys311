@@ -57,12 +57,23 @@ export function resolveCollisions(world) {
 
   for (let i = 0; i < bodies.length; i++) {
     for (let j = i + 1; j < bodies.length; j++) {
+      const energyBefore = bodies[i].kineticEnergy() + bodies[j].kineticEnergy();
       resolvePair(bodies[i], bodies[j], restitution);
+      const energyAfter = bodies[i].kineticEnergy() + bodies[j].kineticEnergy();
+      if (restitution < 1 && energyAfter < energyBefore) {
+        world.externalForceApplied = true;
+      }
     }
   }
 
   if (bounds) {
-    for (const body of bodies) resolveWalls(body, bounds, restitution);
+    for (const body of bodies) {
+      const speedBefore = body.vel.lengthSq();
+      resolveWalls(body, bounds, restitution);
+      if (restitution < 1 && body.vel.lengthSq() < speedBefore) {
+        world.externalForceApplied = true;
+      }
+    }
   }
 }
 
