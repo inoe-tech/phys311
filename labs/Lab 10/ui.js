@@ -1,4 +1,4 @@
-import { KeyboardInput } from "./keyboard.js";
+import { KeyboardInput } from "./input.js";
 
 export class SimulationControls {
   constructor({

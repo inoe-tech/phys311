@@ -4,8 +4,8 @@ import { Camera } from "./render/camera.js";
 import { drawHUD } from "./render/hud.js";
 import { Renderer } from "./render/renderer.js";
 import { createScene } from "./scene.js";
-import { OrbitControls, SimulationControls, VisualControls } from "./ui/controls.js";
-import { PointerInput } from "./ui/pointer.js";
+import { PointerInput } from "./input.js";
+import { OrbitControls, SimulationControls, VisualControls } from "./ui.js";
 
 const canvas = document.querySelector("#simulation");
 const hud = document.querySelector("#hud");
