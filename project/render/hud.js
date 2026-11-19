@@ -5,6 +5,8 @@ export function drawHUD(element, world, {
   renderMs,
   pointerWorld,
   timeStep,
+  selectedBody,
+  orbitalPeriod,
 }) {
   const E = world.totalEnergy();
   const p = world.totalMomentum();
@@ -19,6 +21,8 @@ export function drawHUD(element, world, {
     ["E_total", `${E.toFixed(6)} J`],
     ["ΔE / |E₀|", `${(dE * 100).toFixed(4)} %`],
     ["|p|", `${p.length().toExponential(5)}`],
+    ["Selected Planet", selectedBody?.label ?? "None"],
+    ...(orbitalPeriod ? [["Orbital period", orbitalPeriod]] : []),
     ["cursor", pointerWorld
       ? `(${pointerWorld.x.toFixed(2)}, ${pointerWorld.y.toFixed(2)}) m`
       : "outside canvas"],

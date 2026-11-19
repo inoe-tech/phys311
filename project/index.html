@@ -17,6 +17,7 @@
           title="Advance one step while paused with S">Single step</button>
         <button id="reset" type="button" aria-keyshortcuts="R"
           title="Reset with R">Reset</button>
+        <button id="calculate-period" type="button">Period</button>
         <button id="zoom-out" type="button" aria-label="Zoom out" title="Zoom out with minus">Zoom −</button>
         <button id="zoom-in" type="button" aria-label="Zoom in" title="Zoom in with plus">Zoom +</button>
         <label for="speed">Simulation Speed <output id="speed-value">1.00×</output></label>
@@ -46,6 +47,7 @@
         <label for="trails"><input id="trails" type="checkbox" checked> Motion trails</label>
         <label for="velocity-vectors"><input id="velocity-vectors" type="checkbox" checked> Velocity vectors</label>
         <label for="force-vectors"><input id="force-vectors" type="checkbox" checked> Force vectors</label>
+        <label for="selected-highlight"><input id="selected-highlight" type="checkbox" checked> Selected planet highlight</label>
         <span class="visual-legend">
           <span><i class="legend-swatch velocity"></i>Blue arrow: velocity</span>
           <span><i class="legend-swatch force"></i>Red arrow: force</span>
@@ -53,7 +55,7 @@
       </fieldset>
       <section class="simulation-layout">
         <canvas id="simulation" width="1000" height="600" tabindex="0"
-          aria-keyshortcuts="Space R S + - I O E"
+          aria-keyshortcuts="Space R S + - I O E ArrowLeft ArrowRight"
           aria-label="N-body gravity simulation showing planets orbiting a star">
         </canvas>
         <div class="below-graph">
@@ -70,6 +72,7 @@
               <dt><kbd>I</kbd> / <kbd>O</kbd></dt><dd>Decrease / Increase Simulation Speed</dd>
               <dt><kbd>E</kbd></dt><dd>Change Integrator</dd>
               <dt><kbd>+</kbd> / <kbd>−</kbd></dt><dd>Zoom in / Zoom out</dd>
+              <dt><kbd>←</kbd> / <kbd>→</kbd></dt><dd>Select previous / next planet</dd>
             </dl>
           </aside>
         </div>

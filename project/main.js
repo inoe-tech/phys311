@@ -5,7 +5,12 @@ import { drawHUD } from "./render/hud.js";
 import { Renderer } from "./render/renderer.js";
 import { createScene } from "./scene.js";
 import { PointerInput } from "./input.js";
-import { OrbitControls, SimulationControls, VisualControls } from "./ui.js";
+import {
+  OrbitControls,
+  PlanetSelectionControls,
+  SimulationControls,
+  VisualControls,
+} from "./ui.js";
 
 const canvas = document.querySelector("#simulation");
 const hud = document.querySelector("#hud");
@@ -28,6 +33,10 @@ let scene;
 let pointer;
 let bodyCount = parseFloat(document.querySelector("#body-count").value);
 let orbitControls;
+const selectionControls = new PlanetSelectionControls({
+  renderer,
+  periodButton: document.querySelector("#calculate-period"),
+});
 
 const physicsSliders = {
   gravity: {
@@ -59,6 +68,7 @@ function buildScene() {
   bounds = scene.bounds;
   gravity = scene.gravity;
   drag = scene.drag;
+  selectionControls.setWorld(world, scene.star);
   world.integrator = new integrators[integratorSelect.value]();
   initialEnergy = world.totalEnergy();
   renderer.resize(bounds);
@@ -90,7 +100,7 @@ const controls = new SimulationControls({
   setParameter(name, value) {
     if (!world) return;
     if (name === "gravity") {
-      gravity.g = value;
+      gravity.G = value;
       world.externalForceApplied = true;
     } else if (name === "restitution") {
       world.restitution = value;
@@ -103,6 +113,12 @@ const controls = new SimulationControls({
   },
   zoomOut() {
     camera.zoom(1 / 1.2, canvas);
+  },
+  selectPrevious() {
+    selectionControls.selectPrevious();
+  },
+  selectNext() {
+    selectionControls.selectNext();
   },
 });
 orbitControls = new OrbitControls({
@@ -127,6 +143,7 @@ pointer = new PointerInput(
     return body;
   },
   () => orbitControls.spawnEnabled,
+  (body) => selectionControls.select(body),
 );
 function resizeCanvas() {
   renderer.resize(bounds);
@@ -178,6 +195,8 @@ function frame(timestamp) {
     renderMs,
     pointerWorld: pointer.worldPosition,
     timeStep: accumulator.DT,
+    selectedBody: selectionControls.selectedBody,
+    orbitalPeriod: selectionControls.periodText,
   });
   requestAnimationFrame(frame);
 }

@@ -4,8 +4,12 @@ export class KeyboardInput {
     target.addEventListener("keydown", (event) => {
       const inControl = event.target?.closest?.("button, input, select, textarea");
       if (event.code.startsWith("Arrow")) {
-        if (!inControl) this.keys.add(event.code);
-        if (!inControl) event.preventDefault();
+        if (!inControl) {
+          this.keys.add(event.code);
+          if (!event.repeat && event.code === "ArrowLeft") actions.selectPrevious?.();
+          if (!event.repeat && event.code === "ArrowRight") actions.selectNext?.();
+          event.preventDefault();
+        }
         return;
       }
 
@@ -70,13 +74,14 @@ const LAUNCH_SPEED = 2.5;
 const MAX_LAUNCH_SPEED = 25;
 
 export class PointerInput {
-  constructor(canvas, camera, world, mouseSpring, onLaunch, canSpawn = () => true) {
+  constructor(canvas, camera, world, mouseSpring, onLaunch, canSpawn = () => true, onSelect = () => {}) {
     this.canvas = canvas;
     this.camera = camera;
     this.world = world;
     this.mouseSpring = mouseSpring;
     this.onLaunch = onLaunch;
     this.canSpawn = canSpawn;
+    this.onSelect = onSelect;
     this.worldPosition = null;
     this.slingshot = null;
     this.pointerId = null;
@@ -90,6 +95,7 @@ export class PointerInput {
       this.pointerId = event.pointerId;
       canvas.setPointerCapture(event.pointerId);
       if (body) {
+        this.onSelect(body);
         this.mouseSpring.grab(body, this.worldPosition.x, this.worldPosition.y);
       } else {
         this.slingshot = { start: { ...this.worldPosition }, current: { ...this.worldPosition } };

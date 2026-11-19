@@ -7,6 +7,8 @@ export class Renderer {
     this.showTrails = true;
     this.showVelocityVectors = true;
     this.showForceVectors = true;
+    this.showSelectedHighlight = true;
+    this.selectedBody = null;
     this.trailLength = 500;
     this.pixelRatio = 1;
   }
@@ -146,6 +148,13 @@ export class Renderer {
       if (b === heldBody) {
         ctx.strokeStyle = "#d7263d";
         ctx.lineWidth = 2 * this.pixelRatio;
+        ctx.stroke();
+      }
+      if (b === this.selectedBody && this.showSelectedHighlight) {
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 2.5 * this.pixelRatio;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, b.radius * camera.scale + 5 * this.pixelRatio, 0, 2 * Math.PI);
         ctx.stroke();
       }
     }

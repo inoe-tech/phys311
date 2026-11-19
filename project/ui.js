@@ -53,6 +53,8 @@ export class SimulationControls {
       zoomOut: () => actions.zoomOut(),
       changeSpeed: (amount) => this.setSpeed(this.speed + amount),
       cycleIntegrator: () => this.cycleIntegrator(),
+      selectPrevious: () => actions.selectPrevious?.(),
+      selectNext: () => actions.selectNext?.(),
     });
     this.keys = this.keyboard.keys;
     this.setPaused(false);
@@ -100,6 +102,7 @@ export class VisualControls {
       ["trails", "showTrails"],
       ["velocity-vectors", "showVelocityVectors"],
       ["force-vectors", "showForceVectors"],
+      ["selected-highlight", "showSelectedHighlight"],
     ];
 
     for (const [id, property] of options) {
@@ -110,6 +113,72 @@ export class VisualControls {
         if (property === "showTrails" && !input.checked) renderer.clearTrails();
       });
     }
+  }
+}
+
+export class PlanetSelectionControls {
+  constructor({ renderer, periodButton }) {
+    this.renderer = renderer;
+    this.periodButton = periodButton;
+    this.periodText = "";
+    this.world = null;
+    this.star = null;
+    this.selectedBody = null;
+    periodButton.disabled = true;
+    periodButton.addEventListener("click", () => this.calculatePeriod());
+  }
+
+  setWorld(world, star) {
+    this.world = world;
+    this.star = star;
+    this.select(this.bodies[0] ?? null);
+  }
+
+  get bodies() {
+    return this.world?.bodies.filter((body) => body !== this.star) ?? [];
+  }
+
+  select(body) {
+    if (body && (body === this.star || !this.bodies.includes(body))) return;
+    this.selectedBody = body;
+    this.renderer.selectedBody = body;
+    this.periodText = "";
+    this.periodButton.disabled = !body;
+  }
+
+  selectPrevious() {
+    this.selectAdjacent(-1);
+  }
+
+  selectNext() {
+    this.selectAdjacent(1);
+  }
+
+  selectAdjacent(direction) {
+    const bodies = this.bodies;
+    if (bodies.length === 0) return;
+    const index = bodies.indexOf(this.selectedBody);
+    this.select(bodies[(index + direction + bodies.length) % bodies.length]);
+  }
+
+  calculatePeriod() {
+    const body = this.selectedBody;
+    if (!body || !this.star) return;
+    const gravity = this.world.forces.find((force) => Number.isFinite(force.G));
+    if (!gravity || gravity.G <= 0) {
+      this.periodText = "Orbital period unavailable";
+      return;
+    }
+
+    const dx = body.pos.x - this.star.pos.x;
+    const dy = body.pos.y - this.star.pos.y;
+    const distanceSquared = dx * dx + dy * dy;
+    const gravitationalParameter = gravity.G * (this.star.m + body.m);
+    const period = 2 * Math.PI * Math.sqrt(
+      (distanceSquared + (gravity.eps ?? 0) ** 2) ** 1.5 /
+      gravitationalParameter,
+    );
+    this.periodText = `${period.toFixed(2)} seconds`;
   }
 }
 
