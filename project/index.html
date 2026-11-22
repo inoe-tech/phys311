@@ -17,7 +17,6 @@
           title="Advance one step while paused with S">Single step</button>
         <button id="reset" type="button" aria-keyshortcuts="R"
           title="Reset with R">Reset</button>
-        <button id="calculate-period" type="button">Period</button>
         <button id="zoom-out" type="button" aria-label="Zoom out" title="Zoom out with minus">Zoom −</button>
         <button id="zoom-in" type="button" aria-label="Zoom in" title="Zoom in with plus">Zoom +</button>
         <label for="speed">Simulation Speed <output id="speed-value">1.00×</output></label>
@@ -29,8 +28,8 @@
         <input id="restitution" type="range" min="0" max="1" step="0.01" value="1">
         <label for="drag">Drag Coefficient <output id="drag-value">0.00</output></label>
         <input id="drag" type="range" min="0" max="0.2" step="0.005" value="0">
-        <label for="body-count">Number of Starting Planets <output id="body-count-value">6</output></label>
-        <input id="body-count" type="range" min="1" max="12" step="1" value="6">
+        <label for="body-count">Number of Starting Planets <output id="body-count-value">1</output></label>
+        <input id="body-count" type="range" min="1" max="12" step="1" value="1">
         <label for="spawn-enabled">
           <input id="spawn-enabled" type="checkbox">
           Enable Planet Spawning
@@ -55,12 +54,12 @@
       </fieldset>
       <section class="simulation-layout">
         <canvas id="simulation" width="1000" height="600" tabindex="0"
-          aria-keyshortcuts="Space R S + - I O E ArrowLeft ArrowRight"
+          aria-keyshortcuts="Space R S + - I O E D ArrowLeft ArrowRight"
           aria-label="N-body gravity simulation showing planets orbiting a star">
         </canvas>
         <div class="below-graph">
           <aside class="hud-panel" aria-label="Simulation HUD">
-            <h2>HUD</h2>
+            <h2>HUD <span id="debug-status" class="debug-status" hidden>DEBUG ON</span></h2>
             <div id="hud" aria-live="polite"></div>
           </aside>
           <aside class="keyboard-panel" aria-label="Keyboard controls">
@@ -71,11 +70,18 @@
               <dt><kbd>S</kbd></dt><dd>Advance 1 Time Step</dd>
               <dt><kbd>I</kbd> / <kbd>O</kbd></dt><dd>Decrease / Increase Simulation Speed</dd>
               <dt><kbd>E</kbd></dt><dd>Change Integrator</dd>
+              <dt><kbd>D</kbd></dt><dd>Toggle Debug Mode</dd>
               <dt><kbd>+</kbd> / <kbd>−</kbd></dt><dd>Zoom in / Zoom out</dd>
               <dt><kbd>←</kbd> / <kbd>→</kbd></dt><dd>Select previous / next planet</dd>
             </dl>
           </aside>
         </div>
+        <aside class="kepler-panel" aria-label="Kepler's third law plot">
+          <h2>Log-Log Plot</h2>
+          <canvas id="kepler-plot" width="1000" height="360" role="img"
+            aria-label="Log-log plot of planet orbital periods versus semi-major axes, compared with Kepler's third law">
+          </canvas>
+        </aside>
       </section>
     </main>
     <script type="module" src="./main.js"></script>

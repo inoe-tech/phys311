@@ -28,7 +28,8 @@ export function resolvePair(a, b, e = 0.9) {
 }
 
 export function resolveWalls(body, bounds, e = 0.9) {
-  if (body.isStatic) return;
+  if (body.isStatic) return 0;
+  let contactsResolved = 0;
 
   const minX = bounds.xMin + body.radius;
   const maxX = bounds.xMax - body.radius;
@@ -36,29 +37,35 @@ export function resolveWalls(body, bounds, e = 0.9) {
   const maxY = bounds.yMax - body.radius;
 
   if (body.pos.x < minX || (body.pos.x === minX && body.vel.x < 0)) {
+    contactsResolved++;
     body.pos.x = minX;
     if (body.vel.x < 0) body.vel.x *= -e;
   } else if (body.pos.x > maxX || (body.pos.x === maxX && body.vel.x > 0)) {
+    contactsResolved++;
     body.pos.x = maxX;
     if (body.vel.x > 0) body.vel.x *= -e;
   }
 
   if (body.pos.y < minY || (body.pos.y === minY && body.vel.y < 0)) {
+    contactsResolved++;
     body.pos.y = minY;
     if (body.vel.y < 0) body.vel.y *= -e;
   } else if (body.pos.y > maxY || (body.pos.y === maxY && body.vel.y > 0)) {
+    contactsResolved++;
     body.pos.y = maxY;
     if (body.vel.y > 0) body.vel.y *= -e;
   }
+  return contactsResolved;
 }
 
 export function resolveCollisions(world) {
   const { bodies, bounds, restitution } = world;
+  let contactsResolved = 0;
 
   for (let i = 0; i < bodies.length; i++) {
     for (let j = i + 1; j < bodies.length; j++) {
       const energyBefore = bodies[i].kineticEnergy() + bodies[j].kineticEnergy();
-      resolvePair(bodies[i], bodies[j], restitution);
+      if (resolvePair(bodies[i], bodies[j], restitution)) contactsResolved++;
       const energyAfter = bodies[i].kineticEnergy() + bodies[j].kineticEnergy();
       if (restitution < 1 && energyAfter < energyBefore) {
         world.externalForceApplied = true;
@@ -69,12 +76,13 @@ export function resolveCollisions(world) {
   if (bounds) {
     for (const body of bodies) {
       const speedBefore = body.vel.lengthSq();
-      resolveWalls(body, bounds, restitution);
+      contactsResolved += resolveWalls(body, bounds, restitution);
       if (restitution < 1 && body.vel.lengthSq() < speedBefore) {
         world.externalForceApplied = true;
       }
     }
   }
+  return contactsResolved;
 }
 
 export function gridPairs(bodies, cellSize) {

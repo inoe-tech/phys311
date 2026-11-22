@@ -53,6 +53,7 @@ export class SimulationControls {
       zoomOut: () => actions.zoomOut(),
       changeSpeed: (amount) => this.setSpeed(this.speed + amount),
       cycleIntegrator: () => this.cycleIntegrator(),
+      toggleDebug: () => actions.toggleDebug?.(),
       selectPrevious: () => actions.selectPrevious?.(),
       selectNext: () => actions.selectNext?.(),
     });
@@ -117,15 +118,12 @@ export class VisualControls {
 }
 
 export class PlanetSelectionControls {
-  constructor({ renderer, periodButton }) {
+  constructor({ renderer }) {
     this.renderer = renderer;
-    this.periodButton = periodButton;
     this.periodText = "";
     this.world = null;
     this.star = null;
     this.selectedBody = null;
-    periodButton.disabled = true;
-    periodButton.addEventListener("click", () => this.calculatePeriod());
   }
 
   setWorld(world, star) {
@@ -142,8 +140,7 @@ export class PlanetSelectionControls {
     if (body && (body === this.star || !this.bodies.includes(body))) return;
     this.selectedBody = body;
     this.renderer.selectedBody = body;
-    this.periodText = "";
-    this.periodButton.disabled = !body;
+    this.updateOrbitalPeriod();
   }
 
   selectPrevious() {
@@ -161,9 +158,12 @@ export class PlanetSelectionControls {
     this.select(bodies[(index + direction + bodies.length) % bodies.length]);
   }
 
-  calculatePeriod() {
+  updateOrbitalPeriod() {
     const body = this.selectedBody;
-    if (!body || !this.star) return;
+    if (!body || !this.star) {
+      this.periodText = "";
+      return;
+    }
     const gravity = this.world.forces.find((force) => Number.isFinite(force.G));
     if (!gravity || gravity.G <= 0) {
       this.periodText = "Orbital period unavailable";

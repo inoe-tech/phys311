@@ -9,7 +9,7 @@ export function createScene({
   gravity: gravitationalConstant = 1,
   restitution = 1,
   drag: dragCoefficient = 0,
-  count = 6,
+  count = 1,
 } = {}) {
   const world = new World({ restitution });
   const star = world.add(new Body(0, 0, 0, 0, 500, 0.62, {
@@ -53,7 +53,7 @@ export function createScene({
     const body = world.add(new Body(x, y, vx, vy, launchMass, 0.16, {
       color: PLANET_COLORS[(world.bodies.length - 1) % PLANET_COLORS.length],
     }));
-    body.label = `Body ${world.bodies.length}`;
+    body.label = `Planet ${world.bodies.length - 1}`;
     return body;
   }
 

@@ -1,7 +1,7 @@
 import { Accumulator } from "./engine/accumulator.js";
 import { Euler, EulerCromer, VelocityVerlet } from "./engine/integrators.js";
 import { Camera } from "./render/camera.js";
-import { drawHUD } from "./render/hud.js";
+import { drawHUD, drawKeplerPlot } from "./render/hud.js";
 import { Renderer } from "./render/renderer.js";
 import { createScene } from "./scene.js";
 import { PointerInput } from "./input.js";
@@ -14,6 +14,8 @@ import {
 
 const canvas = document.querySelector("#simulation");
 const hud = document.querySelector("#hud");
+const debugStatus = document.querySelector("#debug-status");
+const keplerPlot = document.querySelector("#kepler-plot");
 const integratorSelect = document.querySelector("#integrator");
 const camera = new Camera(1, 0, 0);
 const renderer = new Renderer(canvas, camera);
@@ -33,10 +35,15 @@ let scene;
 let pointer;
 let bodyCount = parseFloat(document.querySelector("#body-count").value);
 let orbitControls;
-const selectionControls = new PlanetSelectionControls({
-  renderer,
-  periodButton: document.querySelector("#calculate-period"),
-});
+let debugMode = new URLSearchParams(window.location.search).get("debug") === "1";
+const selectionControls = new PlanetSelectionControls({ renderer });
+
+function setDebugMode(enabled) {
+  debugMode = enabled;
+  debugStatus.hidden = !enabled;
+}
+
+setDebugMode(debugMode);
 
 const physicsSliders = {
   gravity: {
@@ -120,6 +127,9 @@ const controls = new SimulationControls({
   selectNext() {
     selectionControls.selectNext();
   },
+  toggleDebug() {
+    setDebugMode(!debugMode);
+  },
 });
 orbitControls = new OrbitControls({
   countInput: document.querySelector("#body-count"),
@@ -177,6 +187,7 @@ function frame(timestamp) {
   } else {
     accumulator.advance(timestamp, (step) => world.step(step), controls.speed);
   }
+  selectionControls.updateOrbitalPeriod();
   physicsMs = performance.now() - physicsStart;
 
   const renderStart = performance.now();
@@ -197,7 +208,9 @@ function frame(timestamp) {
     timeStep: accumulator.DT,
     selectedBody: selectionControls.selectedBody,
     orbitalPeriod: selectionControls.periodText,
+    debug: debugMode,
   });
+  drawKeplerPlot(keplerPlot, world, scene.star, selectionControls.selectedBody);
   requestAnimationFrame(frame);
 }
 

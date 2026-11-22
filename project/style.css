@@ -125,7 +125,8 @@ h1 {
 
 canvas,
 .hud-panel,
-.keyboard-panel {
+.keyboard-panel,
+.kepler-panel {
   border: 1px solid #b7c3ca;
   border-radius: 0.35rem;
   background: #050812;
@@ -165,12 +166,43 @@ canvas:focus-visible {
   margin-top: 0;
 }
 
+.debug-status {
+  margin-left: 0.4rem;
+  padding: 0.1rem 0.35rem;
+  color: #e6edf3;
+  background: #155eef;
+  border-radius: 0.25rem;
+  font-size: 0.7em;
+  vertical-align: middle;
+}
+
 .keyboard-panel {
   min-width: 0;
   padding: 0.9rem;
   background: #111827;
   color: #e6edf3;
   border-color: #303b4b;
+}
+
+.kepler-panel {
+  min-width: 0;
+  padding: 0.9rem;
+  background: #111827;
+  color: #e6edf3;
+  border-color: #303b4b;
+}
+
+.kepler-panel h2 {
+  margin-top: 0;
+}
+
+.kepler-panel p {
+  margin: 0 0 0.5rem;
+  color: #b8c4d4;
+}
+
+#kepler-plot {
+  cursor: default;
 }
 
 .keyboard-panel dl {

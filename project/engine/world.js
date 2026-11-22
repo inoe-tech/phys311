@@ -11,6 +11,7 @@ export class World {
     this.time = 0;
     this.restitution = restitution;
     this.externalForceApplied = false;
+    this.contactsResolved = 0;
     this.lastForces = new Map();
   }
 
@@ -22,7 +23,7 @@ export class World {
     for (const f of this.forces) f.apply(this);       // 2. accumulate
     this.lastForces = new Map(this.bodies.map((body) => [body, body.force.clone()]));
     this.integrator.step(this, dt);                   // 3. integrate
-    resolveCollisions(this);                          // 4. collide
+    this.contactsResolved = resolveCollisions(this);  // 4. collide
     this.time += dt;                                  // 5. advance clock
   }
 
