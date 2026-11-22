@@ -1,3 +1,13 @@
-Why did you accomplish and what do you still want to work on? 
+What did you accomplish and what do you still want to work on? 
 Do you feel you are ready to submit your final project? 
 
+This week I was able to accomplish the MUST tier of my project. I was also 
+able to complete the additional items like the debug hud from the 
+assignment. I still want to work on making my simulation run better, and 
+I would also like to add some of the features from my SHOULD and COULD
+tiers.
+
+I feel that I could submit my project as is and still get a good grade but 
+I just don't feel like it is ready yet. The simulation failed one of the 
+checks from my proposal, so I think it would be best for me to as least 
+fix that before I sumbit it.
