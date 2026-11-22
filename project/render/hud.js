@@ -24,30 +24,30 @@ export function drawHUD(element, world, {
   const rows = [
     ["t", `${world.time.toFixed(2)} s`],
     ["Selected Planet", selectedBody?.label ?? "None"],
-    ...(orbitalPeriod ? [["Orbital Period", orbitalPeriod]] : []),
+    ...(orbitalPeriod ? [["Orbital period", orbitalPeriod]] : []),
     ...(debug ? [
       ["Δt", `1/${Math.round(1 / timeStep)} s`],
-      ["Cursor", pointerWorld
+      ["cursor", pointerWorld
         ? `(${pointerWorld.x.toFixed(2)}, ${pointerWorld.y.toFixed(2)}) m`
         : "outside canvas"],
-      ["Total energy", `${E.toFixed(6)} J`],
+      ["E_total", `${E.toFixed(6)} J`],
       [
-        `Energy drift`,
+        "ΔE / |E₀|",
         driftPercent === null
           ? "N/A (E₀ = 0)"
           : `${driftPercent >= 0 ? "+" : ""}${driftPercent.toFixed(4)}%`,
       ],
-      ["Momentum magnitude", p.length().toExponential(5)],
-      ["Body count", `${world.bodies.length - 1}`],
-      ["Maximum speed", `${maxSpeed.toFixed(5)} m/s`],
-      ["Measured FPS", `${fps.toFixed(1)}`],
-      ["Physics", `${physicsMs.toFixed(3)} ms`],
-      ["Render", `${renderMs.toFixed(3)} ms`],
+      ["|p|", p.length().toExponential(5)],
+      ["bodies", `${world.bodies.length - 1}`],
+      ["max |v|", `${maxSpeed.toFixed(5)} m/s`],
+      ["fps", `${fps.toFixed(1)}`],
+      ["physics", `${physicsMs.toFixed(3)} ms`],
+      ["render", `${renderMs.toFixed(3)} ms`],
     ] : []),
   ];
   element.replaceChildren(...rows.map(([label, value]) => {
     const row = document.createElement("div");
-    row.className = `hud-row${label.startsWith("Energy drift") &&
+    row.className = `hud-row${label === "ΔE / |E₀|" &&
       driftPercent !== null &&
       Math.abs(driftPercent) > DRIFT_TOLERANCE_PERCENT
       ? " drift-high"

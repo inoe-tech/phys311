@@ -20,6 +20,8 @@ export class SimulationControls {
     this.actions = actions;
     this.paused = false;
     this.speed = parseFloat(speedInput.value);
+    this.physicsSliders = physicsSliders;
+    this.physicsUpdates = {};
 
     playButton.addEventListener("click", () => this.togglePlayback());
     stepButton.addEventListener("click", () => this.step());
@@ -41,6 +43,7 @@ export class SimulationControls {
         output.textContent = `${value.toFixed(digits)}${unit}`;
         actions.setParameter(name, value);
       };
+      this.physicsUpdates[name] = update;
       input.addEventListener("input", update);
       update();
     }
@@ -54,6 +57,7 @@ export class SimulationControls {
       changeSpeed: (amount) => this.setSpeed(this.speed + amount),
       cycleIntegrator: () => this.cycleIntegrator(),
       toggleDebug: () => actions.toggleDebug?.(),
+      makeConservative: () => this.makeConservative(),
       selectPrevious: () => actions.selectPrevious?.(),
       selectNext: () => actions.selectNext?.(),
     });
@@ -64,6 +68,20 @@ export class SimulationControls {
 
   togglePlayback() {
     this.setPaused(!this.paused);
+  }
+
+  makeConservative() {
+    this.setPhysicsParameter("drag", 0);
+    this.setPhysicsParameter("restitution", 1);
+    this.actions.makeConservative?.();
+  }
+
+  setPhysicsParameter(name, value) {
+    const slider = this.physicsSliders[name];
+    const update = this.physicsUpdates[name];
+    if (!slider || !update) return;
+    slider.input.value = String(value);
+    update();
   }
 
   step() {

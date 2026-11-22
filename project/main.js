@@ -35,7 +35,7 @@ let scene;
 let pointer;
 let bodyCount = parseFloat(document.querySelector("#body-count").value);
 let orbitControls;
-let debugMode = new URLSearchParams(window.location.search).get("debug") === "1";
+let debugMode = new URLSearchParams(window.location.search).get("debug") === "0";
 const selectionControls = new PlanetSelectionControls({ renderer });
 
 function setDebugMode(enabled) {
@@ -114,6 +114,9 @@ const controls = new SimulationControls({
     } else if (name === "drag") {
       drag.c = value;
     }
+  },
+  makeConservative() {
+    scene.makeConservative();
   },
   zoomIn() {
     camera.zoom(1.2, canvas);

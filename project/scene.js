@@ -57,5 +57,27 @@ export function createScene({
     return body;
   }
 
-  return { world, bounds: VIEW_BOUNDS, gravity, drag, star, planets, mouseSpring, launch };
+  function makeConservative() {
+    world.restitution = 1;
+    mouseSpring.release();
+    mouseSpring.stiffness = 0;
+    mouseSpring.damping = 0;
+    for (const force of world.forces) {
+      if (typeof force.c === "number") force.c = 0;
+      if (typeof force.mag === "number") force.mag = 0;
+      if (typeof force.friction === "number") force.friction = 0;
+    }
+  }
+
+  return {
+    world,
+    bounds: VIEW_BOUNDS,
+    gravity,
+    drag,
+    star,
+    planets,
+    mouseSpring,
+    launch,
+    makeConservative,
+  };
 }

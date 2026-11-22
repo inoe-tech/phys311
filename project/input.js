@@ -43,6 +43,10 @@ export class KeyboardInput {
         if (inControl) return;
         event.preventDefault();
         actions.toggleDebug?.();
+      } else if (event.code === "KeyC") {
+        if (inControl) return;
+        event.preventDefault();
+        actions.makeConservative?.();
       } else if (
         event.code === "Minus" ||
         event.code === "NumpadSubtract" ||
