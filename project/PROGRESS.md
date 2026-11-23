@@ -1,3 +1,6 @@
+GitHub Pages URL:
+    https://github.com/inoe-tech/phys311
+
 MUST tier status table:
 
     Automatic Period Calculation - Done
