@@ -34,6 +34,10 @@
           <input id="spawn-enabled" type="checkbox">
           Enable Planet Spawning
         </label>
+        <label for="turn-off-realism">
+          <input id="turn-off-realism" type="checkbox">
+          Turn off Realism
+        </label>
         <label for="integrator">Integrator</label>
         <select id="integrator">
           <option value="euler-cromer">Euler-Cromer</option>
@@ -41,17 +45,19 @@
           <option value="euler">Euler</option>
         </select>
       </section>
-      <fieldset class="visual-controls">
-        <legend>Physics visuals</legend>
-        <label for="trails"><input id="trails" type="checkbox" checked> Motion trails</label>
-        <label for="velocity-vectors"><input id="velocity-vectors" type="checkbox" checked> Velocity vectors</label>
-        <label for="force-vectors"><input id="force-vectors" type="checkbox" checked> Force vectors</label>
-        <label for="selected-highlight"><input id="selected-highlight" type="checkbox" checked> Selected planet highlight</label>
-        <span class="visual-legend">
-          <span><i class="legend-swatch velocity"></i>Blue arrow: velocity</span>
-          <span><i class="legend-swatch force"></i>Red arrow: force</span>
-        </span>
-      </fieldset>
+      <details class="visual-controls">
+        <summary>Physics visuals</summary>
+        <div class="visual-options">
+          <label for="trails"><input id="trails" type="checkbox" checked> Motion trails</label>
+          <label for="velocity-vectors"><input id="velocity-vectors" type="checkbox" checked> Velocity vectors</label>
+          <label for="force-vectors"><input id="force-vectors" type="checkbox" checked> Force vectors</label>
+          <label for="selected-highlight"><input id="selected-highlight" type="checkbox" checked> Selected planet highlight</label>
+          <span class="visual-legend">
+            <span><i class="legend-swatch velocity"></i>Blue arrow: velocity</span>
+            <span><i class="legend-swatch force"></i>Red arrow: force</span>
+          </span>
+        </div>
+      </details>
       <section class="simulation-layout">
         <canvas id="simulation" width="1000" height="600" tabindex="0"
           aria-keyshortcuts="Space R S + - I O E D C ArrowLeft ArrowRight"
@@ -77,12 +83,12 @@
             </dl>
           </aside>
         </div>
-        <aside class="kepler-panel" aria-label="Kepler's third law plot">
-          <h2>Log-Log Plot</h2>
+        <details class="kepler-panel">
+          <summary>Log-Log Plot</summary>
           <canvas id="kepler-plot" width="1000" height="360" role="img"
             aria-label="Log-log plot of planet orbital periods versus semi-major axes, compared with Kepler's third law">
           </canvas>
-        </aside>
+        </details>
       </section>
     </main>
     <script type="module" src="./main.js"></script>

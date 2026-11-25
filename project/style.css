@@ -72,16 +72,47 @@ h1 {
 }
 
 .visual-controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.6rem 1rem;
   margin: 1rem 0;
   padding: 0.65rem 0.9rem 0.9rem;
   color: #e6edf3;
   background: #111827;
   border: 1px solid #303b4b;
   border-radius: 0.35rem;
+}
+
+.visual-controls summary,
+.kepler-panel summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  font-weight: 700;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.visual-controls summary::after,
+.kepler-panel summary::after {
+  content: "⌄";
+  margin-left: 0.75rem;
+  color: #b8c4d4;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.visual-controls[open] summary::after,
+.kepler-panel[open] summary::after {
+  content: "⌃";
+  color: #e6edf3;
+}
+
+.visual-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1rem;
+  margin-top: 0.65rem;
 }
 
 .visual-controls label,
@@ -190,10 +221,6 @@ canvas:focus-visible {
   background: #111827;
   color: #e6edf3;
   border-color: #303b4b;
-}
-
-.kepler-panel h2 {
-  margin-top: 0;
 }
 
 .kepler-panel p {
