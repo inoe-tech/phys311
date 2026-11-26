@@ -3,7 +3,7 @@ import { Euler, EulerCromer, VelocityVerlet } from "./engine/integrators.js";
 import { Camera } from "./render/camera.js";
 import { drawHUD, drawKeplerPlot } from "./render/hud.js";
 import { Renderer } from "./render/renderer.js";
-import { createScene } from "./scene.js";
+import { createScene, GRAVITATIONAL_CONSTANT_AU_YEAR } from "./scene.js";
 import { PointerInput } from "./input.js";
 import {
   OrbitControls,
@@ -21,6 +21,7 @@ const camera = new Camera(1, 0, 0);
 const renderer = new Renderer(canvas, camera);
 new VisualControls(renderer, document.querySelector(".visual-controls"));
 const accumulator = new Accumulator(1 / 240);
+const SIMULATION_YEARS_PER_REAL_SECOND = 1;
 const integrators = {
   "euler-cromer": EulerCromer,
   verlet: VelocityVerlet,
@@ -107,7 +108,7 @@ const controls = new SimulationControls({
   setParameter(name, value) {
     if (!world) return;
     if (name === "gravity") {
-      gravity.G = value;
+      gravity.G = GRAVITATIONAL_CONSTANT_AU_YEAR * value;
       world.externalForceApplied = true;
     } else if (name === "restitution") {
       world.restitution = value;
@@ -188,7 +189,11 @@ function frame(timestamp) {
   if (controls.paused) {
     accumulator.lastMs = timestamp;
   } else {
-    accumulator.advance(timestamp, (step) => world.step(step), controls.speed);
+    accumulator.advance(
+      timestamp,
+      (step) => world.step(step),
+      controls.speed * SIMULATION_YEARS_PER_REAL_SECOND,
+    );
   }
   selectionControls.updateOrbitalPeriod();
   physicsMs = performance.now() - physicsStart;

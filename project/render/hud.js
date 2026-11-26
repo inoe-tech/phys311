@@ -22,15 +22,15 @@ export function drawHUD(element, world, {
   );
 
   const rows = [
-    ["t", `${world.time.toFixed(2)} s`],
+    ["t", `${world.time.toFixed(2)} yr`],
     ["Selected Planet", selectedBody?.label ?? "None"],
     ...(orbitalPeriod ? [["Orbital period", orbitalPeriod]] : []),
     ...(debug ? [
-      ["Δt", `1/${Math.round(1 / timeStep)} s`],
+      ["Δt", `1/${Math.round(1 / timeStep)} yr`],
       ["cursor", pointerWorld
-        ? `(${pointerWorld.x.toFixed(2)}, ${pointerWorld.y.toFixed(2)}) m`
+        ? `(${pointerWorld.x.toFixed(2)}, ${pointerWorld.y.toFixed(2)}) AU`
         : "outside canvas"],
-      ["E_total", `${E.toFixed(6)} J`],
+      ["E_total", `${E.toExponential(5)} M☉·AU²/yr²`],
       [
         "ΔE / |E₀|",
         driftPercent === null
@@ -39,7 +39,7 @@ export function drawHUD(element, world, {
       ],
       ["|p|", p.length().toExponential(5)],
       ["bodies", `${world.bodies.length - 1}`],
-      ["max |v|", `${maxSpeed.toFixed(5)} m/s`],
+      ["max |v|", `${maxSpeed.toFixed(5)} AU/yr`],
       ["fps", `${fps.toFixed(1)}`],
       ["physics", `${physicsMs.toFixed(3)} ms`],
       ["render", `${renderMs.toFixed(3)} ms`],
@@ -187,11 +187,11 @@ export function drawKeplerPlot(canvas, world, star, selectedBody) {
   context.textAlign = "center";
   context.textBaseline = "bottom";
   context.fillStyle = "#e6edf3";
-  context.fillText("Semi-major axis, a (m)", (plot.left + plot.right) / 2, bounds.height - 4);
+  context.fillText("Semi-major axis, a (AU)", (plot.left + plot.right) / 2, bounds.height - 4);
   context.save();
   context.translate(14, (plot.top + plot.bottom) / 2);
   context.rotate(-Math.PI / 2);
-  context.fillText("Orbital period, T (s)", 0, 0);
+  context.fillText("Orbital period, T (yr)", 0, 0);
   context.restore();
 
   for (const { body, semiMajorAxis, period } of planets) {

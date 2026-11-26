@@ -141,9 +141,13 @@ export class Renderer {
 
     for (const b of world.bodies) {
       const p = camera.toScreen(b.pos);
+      const radius = Math.max(
+        b.radius * camera.scale,
+        (b === world.bodies[0] ? 6 : 3) * this.pixelRatio,
+      );
       ctx.fillStyle = b.color ?? "#ff8200";
       ctx.beginPath();
-      ctx.arc(p.x, p.y, b.radius * camera.scale, 0, 2 * Math.PI);
+      ctx.arc(p.x, p.y, radius, 0, 2 * Math.PI);
       ctx.fill();
       if (b === heldBody) {
         ctx.strokeStyle = "#d7263d";
@@ -154,7 +158,7 @@ export class Renderer {
         ctx.strokeStyle = "#ffffff";
         ctx.lineWidth = 2.5 * this.pixelRatio;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, b.radius * camera.scale + 5 * this.pixelRatio, 0, 2 * Math.PI);
+        ctx.arc(p.x, p.y, radius + 5 * this.pixelRatio, 0, 2 * Math.PI);
         ctx.stroke();
       }
     }
@@ -168,7 +172,7 @@ export class Renderer {
     if (this.showForceVectors) {
       for (const body of world.bodies) {
         const force = world.lastForces.get(body);
-        if (force) this.drawVector(body.pos, force, 0.04, "#b23a48");
+        if (force) this.drawVector(body.pos, force, 25000, "#b23a48");
       }
     }
 

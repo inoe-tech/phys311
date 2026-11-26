@@ -196,7 +196,7 @@ export class PlanetSelectionControls {
       (distanceSquared + (gravity.eps ?? 0) ** 2) ** 1.5 /
       gravitationalParameter,
     );
-    this.periodText = `${period.toFixed(2)} seconds`;
+    this.periodText = `${period.toFixed(2)} years`;
   }
 }
 

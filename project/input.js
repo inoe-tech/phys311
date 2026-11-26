@@ -78,8 +78,8 @@ export function eventToWorld(event, canvas, camera) {
   return camera.toWorld(px, py);
 }
 
-const LAUNCH_SPEED = 2.5;
-const MAX_LAUNCH_SPEED = 25;
+const LAUNCH_SPEED_AU_PER_YEAR_PER_AU = 2.5;
+const MAX_LAUNCH_SPEED_AU_PER_YEAR = 25;
 
 export class PointerInput {
   constructor(canvas, camera, world, mouseSpring, onLaunch, canSpawn = () => true, onSelect = () => {}) {
@@ -143,12 +143,15 @@ export class PointerInput {
   pickBody(position) {
     let picked = null;
     let nearestDistanceSq = Infinity;
+    const rect = this.canvas.getBoundingClientRect();
+    const pickRadius = 10 * this.canvas.width / rect.width / this.camera.scale;
     for (const body of this.world.bodies) {
       if (body.isStatic) continue;
       const dx = body.pos.x - position.x;
       const dy = body.pos.y - position.y;
       const distanceSq = dx * dx + dy * dy;
-      if (distanceSq <= body.radius * body.radius && distanceSq < nearestDistanceSq) {
+      const radius = Math.max(body.radius, pickRadius);
+      if (distanceSq <= radius * radius && distanceSq < nearestDistanceSq) {
         picked = body;
         nearestDistanceSq = distanceSq;
       }
@@ -180,11 +183,11 @@ export class PointerInput {
   }
 
   launchVelocity(start, current) {
-    let vx = (start.x - current.x) * LAUNCH_SPEED;
-    let vy = (start.y - current.y) * LAUNCH_SPEED;
+    let vx = (start.x - current.x) * LAUNCH_SPEED_AU_PER_YEAR_PER_AU;
+    let vy = (start.y - current.y) * LAUNCH_SPEED_AU_PER_YEAR_PER_AU;
     const speed = Math.hypot(vx, vy);
-    if (speed > MAX_LAUNCH_SPEED) {
-      const ratio = MAX_LAUNCH_SPEED / speed;
+    if (speed > MAX_LAUNCH_SPEED_AU_PER_YEAR) {
+      const ratio = MAX_LAUNCH_SPEED_AU_PER_YEAR / speed;
       vx *= ratio;
       vy *= ratio;
     }
@@ -197,7 +200,7 @@ export class PointerInput {
     const velocity = this.launchVelocity(start, current);
     const gravity = this.world.forces.find((force) => "G" in force)?.G ?? 0;
     const drag = this.world.forces.find((force) => "c" in force)?.c ?? 0;
-    const mass = this.world.bodies.find((body) => body !== this.world.bodies[0])?.m ?? 1;
+    const softening = this.world.forces.find((force) => "eps" in force)?.eps ?? 0;
     const sampleStep = Math.max(dt, 1 / 60);
     const points = [{ ...start }];
     let x = start.x;
@@ -207,13 +210,13 @@ export class PointerInput {
 
     for (let i = 0; i < Math.ceil(3 / sampleStep); i++) {
       const speed = Math.hypot(vx, vy);
-      const dragScale = speed === 0 ? 0 : drag * speed / mass;
+      const dragScale = drag * speed;
       let ax = -dragScale * vx;
       let ay = -dragScale * vy;
       for (const body of this.world.bodies) {
         const dx = body.pos.x - x;
         const dy = body.pos.y - y;
-        const distanceSq = dx * dx + dy * dy + 0.01 ** 2;
+        const distanceSq = dx * dx + dy * dy + softening ** 2;
         const gravityScale = gravity * body.m / (distanceSq * Math.sqrt(distanceSq));
         ax += gravityScale * dx;
         ay += gravityScale * dy;

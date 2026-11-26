@@ -81,6 +81,7 @@ h1 {
 }
 
 .visual-controls summary,
+.keyboard-panel summary,
 .kepler-panel summary {
   min-height: 44px;
   display: flex;
@@ -93,6 +94,7 @@ h1 {
 }
 
 .visual-controls summary::after,
+.keyboard-panel summary::after,
 .kepler-panel summary::after {
   content: "⌄";
   margin-left: 0.75rem;
@@ -102,6 +104,7 @@ h1 {
 }
 
 .visual-controls[open] summary::after,
+.keyboard-panel[open] summary::after,
 .kepler-panel[open] summary::after {
   content: "⌃";
   color: #e6edf3;
@@ -192,8 +195,7 @@ canvas:focus-visible {
   border-color: #303b4b;
 }
 
-.hud-panel h2,
-.keyboard-panel h2 {
+.hud-panel h2 {
   margin-top: 0;
 }
 

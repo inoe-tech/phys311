@@ -62,8 +62,8 @@ export class MouseSpring {
     if (displacement.lengthSq() > 0 || this.body.vel.lengthSq() > 0) {
       world.externalForceApplied = true;
     }
-    this.body.force.addScaled(displacement, this.stiffness);
-    this.body.force.addScaled(this.body.vel, -this.damping);
+    this.body.force.addScaled(displacement, this.body.m * this.stiffness);
+    this.body.force.addScaled(this.body.vel, -this.body.m * this.damping);
   }
 }
 
@@ -75,7 +75,7 @@ export class Drag {
     }
     for (const b of world.bodies) {
       const speed = b.vel.length();
-      if (speed > 0) b.force.addScaled(b.vel, -this.c * speed);
+      if (speed > 0) b.force.addScaled(b.vel, -b.m * this.c * speed);
     }
   }
   // no potentialEnergy — drag is non-conservative. That's the point.

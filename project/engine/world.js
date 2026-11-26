@@ -7,7 +7,7 @@ export class World {
     this.bodies = [];
     this.forces = [];
     this.integrator = integrator;
-    this.bounds = bounds;       // {xMin, xMax, yMin, yMax} in meters
+    this.bounds = bounds;       // {xMin, xMax, yMin, yMax} in AU
     this.time = 0;
     this.restitution = restitution;
     this.externalForceApplied = false;
